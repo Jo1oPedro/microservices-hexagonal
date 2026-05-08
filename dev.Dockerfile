@@ -61,4 +61,4 @@ RUN composer install --no-scripts
 
 EXPOSE 9501
 
-ENTRYPOINT ["php", "/opt/www/bin/hyperf.php", "start"]
+CMD ["php", "/opt/www/bin/hyperf.php", "start --watch"]

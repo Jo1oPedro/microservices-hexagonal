@@ -7,12 +7,13 @@ services:
       args:
         UID: 1000
         GID: 1000
+    command: ["php", "bin/hyperf.php", "server:watch"]
     volumes:
       - ./:/opt/www
     ports:
       - 9501:9501
     environment:
-      APP_ENV: dev
+      APP_ENV: ${APP_ENV:-dev}
       SCAN_CACHEABLE: "false"
       DB_HOST: mysql
       DB_DATABASE: ${DB_DATABASE:-hyperf_url_shortner}
@@ -26,7 +27,7 @@ services:
     image: mysql:8.0
     container_name: hyperf-mysql
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE:-hyperf_url_shortner}
+      MYSQL_DATABASE: ${DB_DATABASE:-hyperf}
       MYSQL_USER: ${DB_USERNAME:-hyperf}
       MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootsecret}
