@@ -12,16 +12,20 @@ declare(strict_types=1);
 
 namespace App\Exception\Handler;
 
-use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
+use Hyperf\Logger\LoggerFactory;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 class AppExceptionHandler extends ExceptionHandler
 {
-    public function __construct(protected StdoutLoggerInterface $logger)
+    protected LoggerInterface $logger;
+
+    public function __construct(LoggerFactory $loggerFactory)
     {
+        $this->logger = $loggerFactory->get('default');
     }
 
     public function handle(Throwable $throwable, ResponseInterface $response)
