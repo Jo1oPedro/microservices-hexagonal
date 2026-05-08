@@ -10,10 +10,10 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-use Hyperf\Watcher\Driver\FindNewerDriver;
+use Hyperf\Watcher\Driver\ScanFileDriver;
 
 return [
-    'driver' => FindNewerDriver::class,
+    'driver' => ScanFileDriver::class,
     'bin' => PHP_BINARY,
     'command' => 'bin/hyperf.php start',
     'watch' => [
