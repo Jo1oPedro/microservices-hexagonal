@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\DTO\UserDTO;
-use App\Model\User;
+use App\DTO\CreateUserInput;
 use App\Request\CreateUserRequest;
 use App\Services\UserService;
 use Hyperf\HttpServer\Contract\RequestInterface;
@@ -24,10 +23,15 @@ class UserController
 
     public function store(CreateUserRequest $request, ResponseInterface $response)
     {
+        $fieldsValidated = $request->validated();
         $user = $this->userService->create(
-            new UserDTO(...$request->validated())
+            new CreateUserInput(
+                name: $fieldsValidated['name'],
+                email: $fieldsValidated['email'],
+                password: $fieldsValidated['password']
+            )
         );
 
-        return $response->json(["user12" => $user], 201);
+        return $response->json(["user" => $user->toArray()], 201);
     }
 }
