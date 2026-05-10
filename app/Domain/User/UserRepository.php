@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Domain\User;
+declare(strict_types=1);
 
-use App\Model\User;
+namespace App\Domain\User;
 
 interface UserRepository
 {
-    public function save(User $user);
+    public function save(User $user): User;
 
-    public function delete(int $id);
+    public function delete(string $id): void;
 }
