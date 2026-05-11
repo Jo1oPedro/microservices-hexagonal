@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 use app\Application\User\Port\UserNotificationPort;
 use App\Domain\User\UserRepository;
+use App\Infrastructure\User\Notification\AsyncMQUserNotification;
 use App\Infrastructure\User\Notification\AsyncQueueUserNotification;
 use App\Infrastructure\User\Persistence\UserEloquentRepository;
 use Hyperf\Context\ApplicationContext;
@@ -19,6 +20,7 @@ use Hyperf\Contract\ConfigInterface;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\Transport;
+use function Hyperf\Support\env;
 
 return [
     UserRepository::class => UserEloquentRepository::class,
@@ -28,5 +30,17 @@ return [
             ->get("mail.dsn");
         return new Mailer(Transport::fromDsn($dsn));
     },
-    UserNotificationPort::class => AsyncQueueUserNotification::class
+    UserNotificationPort::class => function () {
+        $container = ApplicationContext::getContainer();
+
+        $class = match(env("NOTIFICATION_TYPE", "queue")) {
+            "mq" => AsyncMQUserNotification::class,
+            "queue" => AsyncQueueUserNotification::class,
+            default => throw new InvalidArgumentException(
+                "Invalid NOTIFICATION_TYPE value. Expected 'mq' or 'queue'."
+            )
+        };
+
+        return $container->get($class);
+    }
 ];
