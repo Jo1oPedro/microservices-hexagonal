@@ -2,15 +2,12 @@
 
 namespace HyperfTest\Unit\UseCases\User;
 
+use app\Application\User\DTO\CreateUserInput;
+use app\Application\User\DTO\CreateUserOutput;
+use app\Application\User\Port\UserNotificationPort;
+use app\Application\User\UseCase\CreateUser;
 use App\Domain\User\User;
 use App\Domain\User\UserRepository;
-use App\DTO\CreateUserInput;
-
-use App\DTO\CreateUserOutput;
-use App\Job\SendWelcomeEmail;
-use App\UseCases\User\CreateUser;
-use Hyperf\AsyncQueue\Driver\DriverFactory;
-use Hyperf\AsyncQueue\Driver\DriverInterface;
 use Hyperf\Testing\TestCase;
 use Mockery;
 use Mockery\MockInterface;
@@ -18,21 +15,15 @@ use Mockery\MockInterface;
 class CreateUserTest extends TestCase
 {
     private MockInterface $repository;
-    private MockInterface $queue;
+    private MockInterface $notification;
     private CreateUser $createUser;
 
     protected function setUp(): void
     {
         $this->repository = Mockery::mock(UserRepository::class);
-        $this->queue = Mockery::mock(DriverInterface::class);
+        $this->notification = Mockery::mock(UserNotificationPort::class);
 
-        $driverFactory = Mockery::mock(DriverFactory::class);
-        $driverFactory
-            ->shouldReceive('get')
-            ->with('default')
-            ->andReturn($this->queue);
-
-        $this->createUser = new CreateUser($this->repository, $driverFactory);
+        $this->createUser = new CreateUser($this->repository, $this->notification);
     }
 
     protected function tearDown(): void
@@ -54,10 +45,10 @@ class CreateUserTest extends TestCase
             ->once()
             ->andReturn($domainUser);
 
-        $this->queue
-            ->shouldReceive("push")
+        $this->notification
+            ->shouldReceive("sendWelcomeEmail")
             ->once()
-            ->with(Mockery::type(SendWelcomeEmail::class));
+            ->with($domainUser->email);
 
         $output = $this->createUser->create(
             new CreateUserInput(
@@ -87,10 +78,10 @@ class CreateUserTest extends TestCase
             }))
             ->andReturn(User::create("joao", "joao@gmail.com", "senha123"));
 
-        $this->queue
-            ->shouldReceive("push")
+        $this->notification
+            ->shouldReceive("sendWelcomeEmail")
             ->once()
-            ->with(Mockery::type(SendWelcomeEmail::class));
+            ->with("joao@gmail.com");
 
         $user = $this->createUser->create(
             new CreateUserInput("joao", "joao@gmail.com", "senha123")

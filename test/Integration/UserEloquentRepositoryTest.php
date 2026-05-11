@@ -3,7 +3,7 @@
 namespace HyperfTest\Integration\Infrastructure;
 
 use App\Domain\User\User;
-use App\Infrastructure\UserEloquentRepository;
+use App\Infrastructure\User\Persistence\UserEloquentRepository;
 use HyperfTest\DatabaseTestCase;
 
 class UserEloquentRepositoryTest extends DatabaseTestCase

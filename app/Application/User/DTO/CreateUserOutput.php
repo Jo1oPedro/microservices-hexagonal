@@ -1,15 +1,15 @@
 <?php
 
-namespace App\DTO;
+namespace app\Application\User\DTO;
 
-class CreateUserOutput
+final readonly class CreateUserOutput
 {
     public function __construct(
-        public readonly string $id,
-        public readonly string $name,
-        public readonly string $email,
-        public readonly string $createdAt,
-        public readonly string $updatedAt
+        public string $id,
+        public string $name,
+        public string $email,
+        public string $createdAt,
+        public string $updatedAt
     ) {}
 
     public function toArray()

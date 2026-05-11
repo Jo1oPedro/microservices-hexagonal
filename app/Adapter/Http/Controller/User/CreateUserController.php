@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\User;
+namespace app\Adapter\Http\Controller\User;
 
-use App\DTO\CreateUserInput;
-use App\Request\CreateUserRequest;
-use App\UseCases\User\CreateUser;
+use app\Adapter\Http\Request\User\CreateUserRequest;
+use app\Application\User\DTO\CreateUserInput;
+use app\Application\User\UseCase\CreateUser;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 
 class CreateUserController

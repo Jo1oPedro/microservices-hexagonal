@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Model;
+namespace app\Infrastructure\User\Persistence\Model;
 
+use app\Infrastructure\Model;
 use Hyperf\Database\Model\Concerns\HasUuids;
 
 /**

@@ -10,5 +10,5 @@ interface UserRepository
 
     public function delete(string $id): void;
 
-    public function findByEmail(string $email);
+    public function findByEmail(string $email): ?User;
 }

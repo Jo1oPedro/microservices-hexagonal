@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Job;
+namespace app\Infrastructure\User\Notification\Job;
 
 use Hyperf\AsyncQueue\Job;
 use Hyperf\Context\ApplicationContext;

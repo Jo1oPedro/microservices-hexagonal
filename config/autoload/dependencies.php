@@ -10,8 +10,10 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
+use app\Application\User\Port\UserNotificationPort;
 use App\Domain\User\UserRepository;
-use App\Infrastructure\UserEloquentRepository;
+use App\Infrastructure\User\Notification\AsyncQueueUserNotification;
+use App\Infrastructure\User\Persistence\UserEloquentRepository;
 use Hyperf\Context\ApplicationContext;
 use Hyperf\Contract\ConfigInterface;
 use Symfony\Component\Mailer\Mailer;
@@ -25,5 +27,6 @@ return [
             ->get(ConfigInterface::class)
             ->get("mail.dsn");
         return new Mailer(Transport::fromDsn($dsn));
-    }
+    },
+    UserNotificationPort::class => AsyncQueueUserNotification::class
 ];

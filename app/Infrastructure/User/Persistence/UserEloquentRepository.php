@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Infrastructure;
+namespace App\Infrastructure\User\Persistence;
 
-use App\Domain\User\Exception\UserEmailAlreadyExistsException;
-use App\Domain\User\UserRepository;
 use App\Domain\User\User as DomainUser;
-use App\Model\User as EloquentUser;
-use Hyperf\Database\Exception\QueryException;
+use App\Domain\User\UserRepository;
+use App\Infrastructure\User\Persistence\Model\User as EloquentUser;
 
 class UserEloquentRepository implements UserRepository
 {
