@@ -9,12 +9,19 @@ use App\Domain\User\User as DomainUser;
 use App\Domain\User\UserRepository;
 use App\DTO\CreateUserInput;
 use App\DTO\CreateUserOutput;
+use App\Job\SendWelcomeEmail;
+use Hyperf\AsyncQueue\Driver\DriverFactory;
+use Hyperf\AsyncQueue\Driver\DriverInterface;
 
 class CreateUser
 {
+    private readonly DriverInterface $queue;
     public function __construct(
-        private UserRepository $userRepository
-    ) {}
+        private UserRepository $userRepository,
+        private DriverFactory $driverFactory
+    ) {
+        $this->queue = $this->driverFactory->get("default");
+    }
 
     public function create(CreateUserInput $createUserInput): CreateUserOutput
     {
@@ -27,8 +34,8 @@ class CreateUser
         $user = DomainUser::create($createUserInput->name, $createUserInput->email, $passwordHash);
         $user = $this->userRepository->save($user);
 
-        //$emailWelcome = new WelcomeEmail();
-        //$emailWelcome->sendEmail($user->email);
+        $this->queue->push(new SendWelcomeEmail($user->email));
+
         return new CreateUserOutput(
             id: $user->id,
             name: $user->name,

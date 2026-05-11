@@ -33,7 +33,8 @@
         "hyperf/redis": "~3.1.0",
         "hyperf/tracer": "~3.1.0",
         "hyperf/validation": "^3.1",
-        "ramsey/uuid": "^4.9"
+        "ramsey/uuid": "^4.9",
+        "symfony/mailer": "^8.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",

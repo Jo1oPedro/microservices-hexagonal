@@ -7,7 +7,10 @@ use App\Domain\User\UserRepository;
 use App\DTO\CreateUserInput;
 
 use App\DTO\CreateUserOutput;
+use App\Job\SendWelcomeEmail;
 use App\UseCases\User\CreateUser;
+use Hyperf\AsyncQueue\Driver\DriverFactory;
+use Hyperf\AsyncQueue\Driver\DriverInterface;
 use Hyperf\Testing\TestCase;
 use Mockery;
 use Mockery\MockInterface;
@@ -15,12 +18,21 @@ use Mockery\MockInterface;
 class CreateUserTest extends TestCase
 {
     private MockInterface $repository;
+    private MockInterface $queue;
     private CreateUser $createUser;
 
     protected function setUp(): void
     {
         $this->repository = Mockery::mock(UserRepository::class);
-        $this->createUser = new CreateUser($this->repository);
+        $this->queue = Mockery::mock(DriverInterface::class);
+
+        $driverFactory = Mockery::mock(DriverFactory::class);
+        $driverFactory
+            ->shouldReceive('get')
+            ->with('default')
+            ->andReturn($this->queue);
+
+        $this->createUser = new CreateUser($this->repository, $driverFactory);
     }
 
     protected function tearDown(): void
@@ -41,6 +53,11 @@ class CreateUserTest extends TestCase
             ->shouldReceive('save')
             ->once()
             ->andReturn($domainUser);
+
+        $this->queue
+            ->shouldReceive("push")
+            ->once()
+            ->with(Mockery::type(SendWelcomeEmail::class));
 
         $output = $this->createUser->create(
             new CreateUserInput(
@@ -69,6 +86,11 @@ class CreateUserTest extends TestCase
                 return password_verify("senha123", $user->password);
             }))
             ->andReturn(User::create("joao", "joao@gmail.com", "senha123"));
+
+        $this->queue
+            ->shouldReceive("push")
+            ->once()
+            ->with(Mockery::type(SendWelcomeEmail::class));
 
         $user = $this->createUser->create(
             new CreateUserInput("joao", "joao@gmail.com", "senha123")
