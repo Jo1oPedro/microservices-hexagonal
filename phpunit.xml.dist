@@ -7,6 +7,11 @@
   </testsuites>
   <php>
     <env name="APP_ENV" value="testing" force="true"/>
+    <env name="DB_DRIVER" value="mysql" force="true"/>
+    <env name="DB_DATABASE" value="hyperf_test" force="true"/>
+    <env name="DB_HOST" value="mysql" force="true"/>
+    <env name="DB_USERNAME" value="hyperf" force="true"/>
+    <env name="DB_PASSWORD" value="secret" force="true"/>
   </php>
   <source>
     <include>

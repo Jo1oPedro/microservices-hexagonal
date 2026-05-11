@@ -1,0 +1,3 @@
+CREATE DATABASE IF NOT EXISTS hyperf_test;
+GRANT ALL PRIVILEGES ON hyperf_test.* TO 'hyperf'@'%';
+FLUSH PRIVILEGES;

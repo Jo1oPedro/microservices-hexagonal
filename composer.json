@@ -82,6 +82,8 @@
         "start": [
             "Composer\\Config::disableProcessTimeout",
             "php ./bin/hyperf.php start"
-        ]
+        ],
+        "docker-up": "docker compose down && docker compose up -d",
+        "docker-dev-up": "docker compose down && docker compose -f docker-compose.yml -f docker-compose.dev.yml"
     }
 }
