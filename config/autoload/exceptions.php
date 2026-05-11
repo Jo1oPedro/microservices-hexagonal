@@ -10,6 +10,7 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
+use App\Exception\Handler\DomainExceptionHandler;
 use Hyperf\Validation\ValidationExceptionHandler;
 
 return [
@@ -17,7 +18,8 @@ return [
         'http' => [
             Hyperf\HttpServer\Exception\Handler\HttpExceptionHandler::class,
             App\Exception\Handler\AppExceptionHandler::class,
-            ValidationExceptionHandler::class
+            ValidationExceptionHandler::class,
+            DomainExceptionHandler::class
         ],
     ],
 ];

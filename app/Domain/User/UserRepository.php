@@ -9,4 +9,6 @@ interface UserRepository
     public function save(User $user): User;
 
     public function delete(string $id): void;
+
+    public function findByEmail(string $email);
 }

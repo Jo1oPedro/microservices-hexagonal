@@ -2,9 +2,11 @@
 
 namespace App\Infrastructure;
 
+use App\Domain\User\Exception\UserEmailAlreadyExistsException;
 use App\Domain\User\UserRepository;
 use App\Domain\User\User as DomainUser;
 use App\Model\User as EloquentUser;
+use Hyperf\Database\Exception\QueryException;
 
 class UserEloquentRepository implements UserRepository
 {
@@ -14,7 +16,7 @@ class UserEloquentRepository implements UserRepository
         $model->id = $user->id;
         $model->email = $user->email;
         $model->name = $user->name;
-        $model->password = $user->passwordHash;
+        $model->password = $user->password;
         $model->save();
         $model->refresh();
 
@@ -32,9 +34,16 @@ class UserEloquentRepository implements UserRepository
             id: $model->id,
             name: $model->name,
             email: $model->email,
-            passwordHash: $model->password,
+            password: $model->password,
             createdAt: new \DateTimeImmutable($model->created_at->toDateTimeString()),
             updatedAt: new \DateTimeImmutable($model->updated_at->toDateTimeString()),
         );
+    }
+
+    public function findByEmail(string $email): ?DomainUser
+    {
+        $model = EloquentUser::where("email", $email)->first();
+
+        return $model ? $this->toDomain($model) : null;
     }
 }

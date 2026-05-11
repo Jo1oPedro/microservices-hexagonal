@@ -12,18 +12,18 @@ final readonly class User
         public string $id,
         public string $name,
         public string $email,
-        public string $passwordHash,
+        public string $password,
         public \DateTimeImmutable $createdAt,
         public \DateTimeImmutable $updatedAt
     ) {}
 
-    public static function create(string $name, string $email, string $passwordHash): self
+    public static function create(string $name, string $email, string $password): self
     {
         return new self(
             id: (string) Uuid::uuid4(),
             name: $name,
             email: $email,
-            passwordHash: $passwordHash,
+            password: $password,
             createdAt: new \DateTimeImmutable(),
             updatedAt: new \DateTimeImmutable()
         );
