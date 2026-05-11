@@ -1,16 +1,46 @@
+# ---------- IDE / Editor ----------
+.idea/
+.vscode/
 .buildpath
 .settings/
 .project
-*.patch
-.idea/
-.git/
-runtime/
-vendor/
 .phpintel/
-.env
+*.iml
+
+# ---------- OS ----------
 .DS_Store
-.phpunit*
+Thumbs.db
+desktop.ini
+NUL
+
+# ---------- PHP / Composer ----------
+vendor/
+composer.phar
+
+# ---------- Hyperf / runtime ----------
+runtime/
+
+# ---------- Env ----------
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# ---------- Tests / Static analysis cache ----------
+.phpunit.result.cache
+.phpunit.cache/
 *.cache
-.vscode/
-/phpstan.neon
-/phpunit.xml
+.php-cs-fixer.cache
+.phpstan.cache
+phpstan.neon
+phpunit.xml
+
+# ---------- Logs ----------
+*.log
+logs/
+
+# ---------- Docker volumes (dados locais) ----------
+docker/mysql/data/
+
+# ---------- Outros ----------
+*.patch

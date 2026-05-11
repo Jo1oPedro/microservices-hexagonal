@@ -1092,16 +1092,16 @@
         },
         {
             "name": "hyperf/cache",
-            "version": "v3.1.67",
+            "version": "v3.1.69",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hyperf/cache.git",
-                "reference": "55f8d86088af897367602ff746f3e34e086a0631"
+                "reference": "29ce7c1e2d41f0d28ba7c29609aea323c2a6f56c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hyperf/cache/zipball/55f8d86088af897367602ff746f3e34e086a0631",
-                "reference": "55f8d86088af897367602ff746f3e34e086a0631",
+                "url": "https://api.github.com/repos/hyperf/cache/zipball/29ce7c1e2d41f0d28ba7c29609aea323c2a6f56c",
+                "reference": "29ce7c1e2d41f0d28ba7c29609aea323c2a6f56c",
                 "shasum": ""
             },
             "require": {
@@ -1161,7 +1161,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2026-01-30T09:43:48+00:00"
+            "time": "2026-05-09T01:55:29+00:00"
         },
         {
             "name": "hyperf/code-parser",
@@ -2612,16 +2612,16 @@
         },
         {
             "name": "hyperf/http-message",
-            "version": "v3.1.65",
+            "version": "v3.1.69",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hyperf/http-message.git",
-                "reference": "74fbf1669992c2476bea4b4aca91e528159066b5"
+                "reference": "6e03ea1cb551ce3999cc7f0c7bd041c58bcad171"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hyperf/http-message/zipball/74fbf1669992c2476bea4b4aca91e528159066b5",
-                "reference": "74fbf1669992c2476bea4b4aca91e528159066b5",
+                "url": "https://api.github.com/repos/hyperf/http-message/zipball/6e03ea1cb551ce3999cc7f0c7bd041c58bcad171",
+                "reference": "6e03ea1cb551ce3999cc7f0c7bd041c58bcad171",
                 "shasum": ""
             },
             "require": {
@@ -2666,7 +2666,7 @@
             ],
             "support": {
                 "issues": "https://github.com/hyperf/http-message/issues",
-                "source": "https://github.com/hyperf/http-message/tree/v3.1.65"
+                "source": "https://github.com/hyperf/http-message/tree/v3.1.69"
             },
             "funding": [
                 {
@@ -2678,20 +2678,20 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2025-12-01T03:37:59+00:00"
+            "time": "2026-04-28T03:25:00+00:00"
         },
         {
             "name": "hyperf/http-server",
-            "version": "v3.1.65",
+            "version": "v3.1.69",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hyperf/http-server.git",
-                "reference": "95936e21e47a121df35d02296448b2439f9997f0"
+                "reference": "7d813bc8b14c359cefef5b2856703b853f6cecdc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hyperf/http-server/zipball/95936e21e47a121df35d02296448b2439f9997f0",
-                "reference": "95936e21e47a121df35d02296448b2439f9997f0",
+                "url": "https://api.github.com/repos/hyperf/http-server/zipball/7d813bc8b14c359cefef5b2856703b853f6cecdc",
+                "reference": "7d813bc8b14c359cefef5b2856703b853f6cecdc",
                 "shasum": ""
             },
             "require": {
@@ -2763,7 +2763,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2025-12-01T03:37:59+00:00"
+            "time": "2026-05-09T02:09:50+00:00"
         },
         {
             "name": "hyperf/laminas-mime",
@@ -3362,16 +3362,16 @@
         },
         {
             "name": "hyperf/redis",
-            "version": "v3.1.66",
+            "version": "v3.1.69",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hyperf/redis.git",
-                "reference": "65350b3af33dc2698d28757a8edfcc6c7dd52251"
+                "reference": "8c1945f6bdaf4b1ec9fdedd1f10e512df77e6c6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hyperf/redis/zipball/65350b3af33dc2698d28757a8edfcc6c7dd52251",
-                "reference": "65350b3af33dc2698d28757a8edfcc6c7dd52251",
+                "url": "https://api.github.com/repos/hyperf/redis/zipball/8c1945f6bdaf4b1ec9fdedd1f10e512df77e6c6c",
+                "reference": "8c1945f6bdaf4b1ec9fdedd1f10e512df77e6c6c",
                 "shasum": ""
             },
             "require": {
@@ -3431,7 +3431,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2026-01-25T01:46:18+00:00"
+            "time": "2026-04-21T09:55:49+00:00"
         },
         {
             "name": "hyperf/serializer",

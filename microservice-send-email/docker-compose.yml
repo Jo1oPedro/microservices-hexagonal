@@ -1,0 +1,19 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        PHP_VERSION: '8.4-bookworm'
+      target: "${BUILD_TARGET:-app}"
+    container_name: app
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./:/var/www/app
+    networks:
+      - hyperf-network
+
+networks:
+  hyperf-network:
+    external: true
