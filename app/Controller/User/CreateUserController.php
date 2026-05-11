@@ -2,26 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\User;
 
 use App\DTO\CreateUserInput;
 use App\Request\CreateUserRequest;
-use App\Services\UserService;
-use Hyperf\HttpServer\Contract\RequestInterface;
+use App\UseCases\User\CreateUser;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 
-class UserController
+class CreateUserController
 {
     public function __construct(
-      private UserService $userService
+      private CreateUser $userService
     ) {}
 
-    public function index(RequestInterface $request, ResponseInterface $response)
-    {
-        return $response->raw('Hello Hyperf!');
-    }
-
-    public function store(CreateUserRequest $request, ResponseInterface $response)
+    public function __invoke(CreateUserRequest $request, ResponseInterface $response)
     {
         $fieldsValidated = $request->validated();
         $user = $this->userService->create(
@@ -32,6 +26,6 @@ class UserController
             )
         );
 
-        return $response->json(["user" => $user->toArray()], 201);
+        return $response->json(["user" => $user->toArray()])->withStatus(201);
     }
 }
