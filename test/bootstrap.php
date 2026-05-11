@@ -10,6 +10,7 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 use Hyperf\Contract\ApplicationInterface;
+use Hyperf\Database\Migrations\Migrator;
 use Hyperf\Di\ClassLoader;
 use Hyperf\Engine\DefaultOption;
 
@@ -25,8 +26,26 @@ require BASE_PATH . '/vendor/autoload.php';
 
 ! defined('SWOOLE_HOOK_FLAGS') && define('SWOOLE_HOOK_FLAGS', DefaultOption::hookFlags());
 
+putenv('DB_DATABASE=hyperf_test');
+$_ENV['DB_DATABASE'] = 'hyperf_test';
+$_SERVER['DB_DATABASE'] = 'hyperf_test';
+
 ClassLoader::init();
 
 $container = require BASE_PATH . '/config/container.php';
 
 $container->get(ApplicationInterface::class);
+
+$migrator = $container->get(Migrator::class);
+
+try {
+    $migrator->reset([BASE_PATH . "/migrations"]);
+} catch (Throwable $e) {
+
+}
+
+if(!$migrator->repositoryExists()) {
+    $migrator->getRepository()->createRepository();
+}
+
+$migrator->run([BASE_PATH . "/migrations"]);
