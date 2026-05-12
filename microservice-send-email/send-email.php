@@ -3,6 +3,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use App\AMQP\AmqpConnection;
+use App\Tracing\ZipkinTracer;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -29,6 +30,8 @@ $dsn = parse_url($_ENV['MAIL_DSN']);
 $connection = AmqpConnection::getInstance();
 $channel    = $connection->channel();
 
+$tracer = new ZipkinTracer();
+
 // --- Exchanges ---
 $channel->exchange_declare($exchange,      'topic',  false, true, false);
 $channel->exchange_declare($retryExchange, 'direct', false, true, false);
@@ -54,37 +57,53 @@ $channel->queue_declare($dlQueue, false, true, false, false);
 $channel->queue_bind($dlQueue, $dlx, $queue);
 
 // --- Consumer ---
-$callback = function (AMQPMessage $message) use ($dsn, $channel, $retryExchange, $retryQueue): void {
-    $data  = json_decode($message->getBody(), true);
-    $email = $data['email'] ?? null;
-
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        logMessage('ERROR', 'Payload inválido, descartando', ['body' => $message->getBody()]);
-        $message->nack(false, false);
-        return;
-    }
-
-    $retryCount = resolveRetryCount($message);
+$callback = function (AMQPMessage $message) use ($dsn, $channel, $retryExchange, $retryQueue, $tracer, $queue): void {
+    $span = $tracer->startFromMessage($message, "amqp.consume {$queue}");
+    $span->tag('messaging.system', 'rabbitmq');
+    $span->tag('messaging.destination', $queue);
+    $span->tag('messaging.operation', 'process');
 
     try {
-        sendWelcomeEmail($dsn, $email);
-        logMessage('INFO', 'Email enviado', ['email' => $email, 'attempt' => $retryCount + 1]);
-        $message->ack();
-    } catch (MailerException $e) {
-        logMessage('WARNING', 'Falha ao enviar email', [
-            'email'   => $email,
-            'attempt' => $retryCount + 1,
-            'error'   => $e->getMessage(),
-        ]);
+        $data  = json_decode($message->getBody(), true);
+        $email = $data['email'] ?? null;
 
-        if ($retryCount >= MAX_RETRIES) {
-            logMessage('ERROR', 'Máximo de tentativas atingido, enviando para DLQ', ['email' => $email]);
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $span->tag('error', 'invalid_payload');
+            logMessage('ERROR', 'Payload inválido, descartando', ['body' => $message->getBody()]);
             $message->nack(false, false);
             return;
         }
 
-        scheduleRetry($channel, $retryExchange, $retryQueue, $message, $retryCount + 1);
-        $message->ack();
+        $span->tag('email.to', $email);
+        $retryCount = resolveRetryCount($message);
+        $span->tag('retry.count', (string) $retryCount);
+
+        try {
+            sendWelcomeEmail($dsn, $email);
+            logMessage('INFO', 'Email enviado', ['email' => $email, 'attempt' => $retryCount + 1]);
+            $message->ack();
+        } catch (MailerException $e) {
+            $span->tag('error', 'true');
+            $span->tag('error.message', $e->getMessage());
+            logMessage('WARNING', 'Falha ao enviar email', [
+                'email'   => $email,
+                'attempt' => $retryCount + 1,
+                'error'   => $e->getMessage(),
+            ]);
+
+            if ($retryCount >= MAX_RETRIES) {
+                $span->tag('outcome', 'dlq');
+                logMessage('ERROR', 'Máximo de tentativas atingido, enviando para DLQ', ['email' => $email]);
+                $message->nack(false, false);
+                return;
+            }
+
+            $span->tag('outcome', 'retry');
+            scheduleRetry($channel, $retryExchange, $retryQueue, $message, $retryCount + 1);
+            $message->ack();
+        }
+    } finally {
+        $span->finish();
     }
 };
 
@@ -130,11 +149,16 @@ function scheduleRetry(
     AMQPMessage $original,
     int $nextRetryCount
 ): void {
+    // Preserva os headers originais (B3, correlation_id) e atualiza x-retry-count.
+    $origProps   = $original->get_properties();
+    $origHeaders = ($origProps['application_headers'] ?? null)?->getNativeData() ?? [];
+    $origHeaders['x-retry-count'] = $nextRetryCount;
+
     $retryMessage = new AMQPMessage(
         $original->getBody(),
         [
             'delivery_mode'       => AMQPMessage::DELIVERY_MODE_PERSISTENT,
-            'application_headers' => new AMQPTable(['x-retry-count' => $nextRetryCount]),
+            'application_headers' => new AMQPTable($origHeaders),
         ]
     );
 

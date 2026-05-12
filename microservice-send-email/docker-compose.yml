@@ -7,8 +7,11 @@ services:
         PHP_VERSION: '8.4-bookworm'
       target: "${BUILD_TARGET:-app}"
     container_name: app
-    tty: true
-    stdin_open: true
+    restart: unless-stopped
+    command: ["php", "send-email.php"]
+    environment:
+      APP_NAME: send-email-worker
+      ZIPKIN_ENDPOINT_URL: http://jaeger:9411/api/v2/spans
     volumes:
       - ./:/var/www/app
     networks:
