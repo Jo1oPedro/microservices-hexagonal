@@ -10,10 +10,14 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
+use App\Middleware\CorrelationIdMiddleware;
+use App\Middleware\TracingMiddleware;
 use Hyperf\Validation\Middleware\ValidationMiddleware;
 
 return [
     'http' => [
+        CorrelationIdMiddleware::class,
+        TracingMiddleware::class,
         ValidationMiddleware::class,
     ],
 ];
