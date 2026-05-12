@@ -5,9 +5,11 @@ namespace App\Infrastructure\User\Persistence;
 use App\Domain\User\User as DomainUser;
 use App\Domain\User\UserRepository;
 use App\Infrastructure\User\Persistence\Model\User as EloquentUser;
+use App\Tracing\Annotation\TraceLayer;
 
 class UserEloquentRepository implements UserRepository
 {
+    #[TraceLayer(name: "repository.user.save", tag: "layer.repository")]
     public function save(DomainUser $user): DomainUser
     {
         $model = new EloquentUser();

@@ -22,7 +22,7 @@ class SendWelcomeEmail extends Job
         $mailer = $container->get(MailerInterface::class);
         $config = $container->get(ConfigInterface::class);
 
-        $message = new Email()
+        $message = (new Email())
             ->from($config->get("mail.from"))
             ->to($this->email)
             ->subject("Welcome to {$config->get("app_name")}")

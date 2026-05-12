@@ -10,6 +10,7 @@ use app\Application\User\Port\UserNotificationPort;
 use App\Domain\User\Exception\UserEmailAlreadyExistsException;
 use App\Domain\User\User as DomainUser;
 use App\Domain\User\UserRepository;
+use App\Tracing\Annotation\TraceLayer;
 
 class CreateUser
 {
@@ -18,6 +19,7 @@ class CreateUser
         private UserNotificationPort $asyncQueueNotification,
     ) {}
 
+    #[TraceLayer(name: "usecase.create_user", tag: "layer.usecase")]
     public function create(CreateUserInput $createUserInput): CreateUserOutput
     {
         if($this->userRepository->findByEmail($createUserInput->email)) {

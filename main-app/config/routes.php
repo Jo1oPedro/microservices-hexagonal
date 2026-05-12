@@ -21,6 +21,6 @@ Router::get('/favicon.ico', function () {
 
 Router::addGroup("/api/v1", function () {
    Router::addGroup("/users", function () {
-       Router::post("", [CreateUserController::class, '__invoke']);
+       Router::post("", [CreateUserController::class, 'create']);
    });
 });
