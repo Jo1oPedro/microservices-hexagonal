@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-namespace app\Infrastructure;
+namespace App\Infrastructure;
 
 use Hyperf\DbConnection\Model\Model as BaseModel;
 use Hyperf\ModelCache\Cacheable;

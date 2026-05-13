@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Application\User\Port;
+namespace App\Application\User\Port;
 
 interface UserNotificationPort
 {

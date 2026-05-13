@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\User\Notification;
 
-use app\Application\User\Port\UserNotificationPort;
-use app\Infrastructure\User\Notification\Job\SendWelcomeEmail;
+use App\Application\User\Port\UserNotificationPort;
+use App\Infrastructure\User\Notification\Job\SendWelcomeEmail;
 use App\Tracing\Annotation\TraceLayer;
 use Hyperf\AsyncQueue\Driver\DriverFactory;
 use Hyperf\AsyncQueue\Driver\DriverInterface;

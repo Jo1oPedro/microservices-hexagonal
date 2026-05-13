@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\User\Notification;
 
-use app\Application\User\Port\UserNotificationPort;
-use app\Infrastructure\User\Notification\Message\WelcomeEmailMessage;
+use App\Application\User\Port\UserNotificationPort;
+use App\Infrastructure\User\Notification\Message\WelcomeEmailMessage;
 use App\Tracing\Annotation\TraceLayer;
 use Hyperf\Amqp\Producer;
 

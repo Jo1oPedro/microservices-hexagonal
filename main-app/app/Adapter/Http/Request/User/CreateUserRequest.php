@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\Adapter\Http\Request\User;
+namespace App\Adapter\Http\Request\User;
 
 use Hyperf\Validation\Request\FormRequest;
 

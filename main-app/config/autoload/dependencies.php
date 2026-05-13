@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-use app\Application\User\Port\UserNotificationPort;
+use App\Application\User\Port\UserNotificationPort;
 use App\Domain\User\UserRepository;
 use App\Infrastructure\User\Notification\AsyncMQUserNotification;
 use App\Infrastructure\User\Notification\AsyncQueueUserNotification;

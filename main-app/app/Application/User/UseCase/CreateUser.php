@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace app\Application\User\UseCase;
+namespace App\Application\User\UseCase;
 
-use app\Application\User\DTO\CreateUserInput;
-use app\Application\User\DTO\CreateUserOutput;
-use app\Application\User\Port\UserNotificationPort;
+use App\Application\User\DTO\CreateUserInput;
+use App\Application\User\DTO\CreateUserOutput;
+use App\Application\User\Port\UserNotificationPort;
 use App\Domain\User\Exception\UserEmailAlreadyExistsException;
 use App\Domain\User\User as DomainUser;
 use App\Domain\User\UserRepository;

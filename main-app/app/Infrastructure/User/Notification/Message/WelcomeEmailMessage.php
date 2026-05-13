@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Infrastructure\User\Notification\Message;
+namespace App\Infrastructure\User\Notification\Message;
 
 use Hyperf\Amqp\Message\ProducerMessage;
 use Hyperf\Context\Context;

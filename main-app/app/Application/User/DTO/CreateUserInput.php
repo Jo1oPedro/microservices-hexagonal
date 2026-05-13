@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Application\User\DTO;
+namespace App\Application\User\DTO;
 
 final readonly class CreateUserInput
 {
