@@ -40,6 +40,13 @@ RUN set -ex \
     && rm -rf /var/cache/apk/* /tmp/* /usr/share/man \
     && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
+RUN set -ex \
+    && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS linux-headers \
+    && pecl install grpc \
+    && docker-php-ext-enable grpc \
+    && apk del .build-deps \
+    && rm -rf /tmp/pear
+
 WORKDIR /opt/www
 
 # Composer Cache

@@ -4,12 +4,12 @@ namespace App\Infrastructure\User\Persistence;
 
 use App\Domain\User\User as DomainUser;
 use App\Domain\User\UserRepository;
+use App\Infrastructure\Observability\Tracing\Annotation\Traced;
 use App\Infrastructure\User\Persistence\Model\User as EloquentUser;
-use App\Tracing\Annotation\TraceLayer;
 
 class UserEloquentRepository implements UserRepository
 {
-    #[TraceLayer(name: "repository.user.save", tag: "layer.repository")]
+    #[Traced(name: 'repository.user.save')]
     public function save(DomainUser $user): DomainUser
     {
         $model = new EloquentUser();
@@ -40,6 +40,7 @@ class UserEloquentRepository implements UserRepository
         );
     }
 
+    #[Traced(name: 'repository.user.findByEmail')]
     public function findByEmail(string $email): ?DomainUser
     {
         $model = EloquentUser::where("email", $email)->first();

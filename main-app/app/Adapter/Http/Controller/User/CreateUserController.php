@@ -7,7 +7,7 @@ namespace App\Adapter\Http\Controller\User;
 use App\Adapter\Http\Request\User\CreateUserRequest;
 use App\Application\User\DTO\CreateUserInput;
 use App\Application\User\UseCase\CreateUser;
-use App\Tracing\Annotation\TraceLayer;
+use App\Infrastructure\Observability\Tracing\Annotation\Traced;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 
 class CreateUserController
@@ -16,7 +16,7 @@ class CreateUserController
       private CreateUser $userService
     ) {}
 
-    #[TraceLayer(name: "http.controller.create.user", tag: "layer.controller")]
+    #[Traced(name: 'controller.user.create')]
     public function create(CreateUserRequest $request, ResponseInterface $response)
     {
         $fieldsValidated = $request->validated();

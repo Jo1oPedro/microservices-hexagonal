@@ -26,7 +26,6 @@ connectors:
       - name: http.method
       - name: http.status_code
       - name: messaging.destination
-      - name: service.name
     exemplars:
       enabled: true
     metrics_flush_interval: 15s
@@ -37,10 +36,6 @@ exporters:
     endpoint: tempo:4317
     tls:
       insecure: true
-
-  # Mantém Jaeger também via Zipkin (até a Fase 7)
-  zipkin:
-    endpoint: http://jaeger:9411/api/v2/spans
 
   # Métricas (spanmetrics + custom do app) vão pro Prometheus
   prometheus:
@@ -68,7 +63,7 @@ service:
     traces:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [otlp/tempo, zipkin, spanmetrics]
+      exporters: [otlp/tempo, spanmetrics]
 
     metrics:
       receivers: [otlp, spanmetrics]

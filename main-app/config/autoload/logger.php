@@ -1,30 +1,36 @@
 <?php
 
 declare(strict_types=1);
-/**
- * This file is part of Hyperf.
- *
- * @link     https://www.hyperf.io
- * @document https://hyperf.wiki
- * @contact  group@hyperf.io
- * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
- */
+
+use App\Infrastructure\Observability\Logging\OtelLogHandler;
+use App\Infrastructure\Observability\Logging\OtelTraceContextProcessor;
+use Monolog\Formatter\JsonFormatter;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+
 return [
     'default' => [
-        'handler' => [
-            'class' => Monolog\Handler\StreamHandler::class,
-            'constructor' => [
-                'stream' => BASE_PATH . '/runtime/logs/hyperf.log',
-                'level' => Monolog\Logger::DEBUG,
+        'handlers' => [
+            [
+                'class' => StreamHandler::class,
+                'constructor' => [
+                    'stream' => BASE_PATH . '/runtime/logs/hyperf.log',
+                    'level'  => Logger::DEBUG,
+                ],
+                'formatter' => [
+                    'class' => JsonFormatter::class,
+                    'constructor' => [],
+                ],
+            ],
+            [
+                'class' => OtelLogHandler::class,
+                'constructor' => [
+                    'level' => Logger::INFO,
+                ],
             ],
         ],
-        'formatter' => [
-            'class' => Monolog\Formatter\LineFormatter::class,
-            'constructor' => [
-                'format' => null,
-                'dateFormat' => 'Y-m-d H:i:s',
-                'allowInlineLineBreaks' => true,
-            ],
+        'processors' => [
+            ['class' => OtelTraceContextProcessor::class],
         ],
     ],
 ];

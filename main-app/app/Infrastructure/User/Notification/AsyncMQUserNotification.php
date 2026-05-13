@@ -3,8 +3,8 @@
 namespace App\Infrastructure\User\Notification;
 
 use App\Application\User\Port\UserNotificationPort;
+use App\Infrastructure\Observability\Tracing\Annotation\Traced;
 use App\Infrastructure\User\Notification\Message\WelcomeEmailMessage;
-use App\Tracing\Annotation\TraceLayer;
 use Hyperf\Amqp\Producer;
 
 final readonly class AsyncMQUserNotification implements UserNotificationPort
@@ -13,7 +13,7 @@ final readonly class AsyncMQUserNotification implements UserNotificationPort
         private Producer $producer
     ) {}
 
-    #[TraceLayer(name: "mq_notification.user.welcome", tag: "layer.notification_mq")]
+    #[Traced(name: 'notification.welcome_email.publish', kind: 'producer')]
     public function sendWelcomeEmail(string $email): void
     {
         $this->producer->produce(new WelcomeEmailMessage($email));
