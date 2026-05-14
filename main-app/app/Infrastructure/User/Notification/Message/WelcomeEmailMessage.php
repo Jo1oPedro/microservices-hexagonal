@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\User\Notification\Message;
 
 use Hyperf\Amqp\Message\ProducerMessage;
 use Hyperf\Context\Context;
-use Hyperf\Tracer\TracerContext;
+use OpenTelemetry\API\Globals;
+use OpenTelemetry\Context\Context as OtelContext;
 use PhpAmqpLib\Wire\AMQPTable;
-
-use const OpenTracing\Formats\TEXT_MAP;
 
 class WelcomeEmailMessage extends ProducerMessage
 {
@@ -23,11 +24,13 @@ class WelcomeEmailMessage extends ProducerMessage
 
     public function payload(): string
     {
-        return json_encode(
-            ["email" => $this->payload]
-        );
+        return json_encode(['email' => $this->payload]);
     }
 
+    /**
+     * Injects W3C TraceContext (traceparent + tracestate) into AMQP headers
+     * so the consumer can continue the same trace.
+     */
     private function buildTracingHeaders(): array
     {
         $headers = [
@@ -35,13 +38,9 @@ class WelcomeEmailMessage extends ProducerMessage
         ];
 
         try {
-            $tracer  = TracerContext::getTracer();
-            $rootSpan = Context::get('tracer.root_span');
-
-            if ($rootSpan !== null) {
-                $tracer->inject($rootSpan->getContext(), TEXT_MAP, $headers);
-            }
+            Globals::propagator()->inject($headers, null, OtelContext::getCurrent());
         } catch (\Throwable) {
+            // OTel not initialized — fail silently, message still flows
         }
 
         return $headers;
