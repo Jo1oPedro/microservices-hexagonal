@@ -10,7 +10,7 @@ use App\Application\User\Port\UserNotificationPort;
 use App\Domain\User\Exception\UserEmailAlreadyExistsException;
 use App\Domain\User\User as DomainUser;
 use App\Domain\User\UserRepository;
-use App\Infrastructure\Observability\Tracing\Annotation\Traced;
+use Cascata\HyperfOpenTelemetry\Tracing\Annotation\Traced;
 
 class CreateUser
 {

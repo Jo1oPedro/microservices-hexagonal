@@ -3,7 +3,7 @@
 namespace App\Infrastructure\User\Notification;
 
 use App\Application\User\Port\UserNotificationPort;
-use App\Infrastructure\Observability\Tracing\Annotation\Traced;
+use Cascata\HyperfOpenTelemetry\Tracing\Annotation\Traced;
 use App\Infrastructure\User\Notification\Message\WelcomeEmailMessage;
 use Hyperf\Amqp\Producer;
 

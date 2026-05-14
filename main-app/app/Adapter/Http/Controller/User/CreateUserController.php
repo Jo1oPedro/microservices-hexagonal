@@ -7,7 +7,7 @@ namespace App\Adapter\Http\Controller\User;
 use App\Adapter\Http\Request\User\CreateUserRequest;
 use App\Application\User\DTO\CreateUserInput;
 use App\Application\User\UseCase\CreateUser;
-use App\Infrastructure\Observability\Tracing\Annotation\Traced;
+use Cascata\HyperfOpenTelemetry\Tracing\Annotation\Traced;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 
 class CreateUserController

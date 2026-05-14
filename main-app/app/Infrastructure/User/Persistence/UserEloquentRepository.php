@@ -4,7 +4,7 @@ namespace App\Infrastructure\User\Persistence;
 
 use App\Domain\User\User as DomainUser;
 use App\Domain\User\UserRepository;
-use App\Infrastructure\Observability\Tracing\Annotation\Traced;
+use Cascata\HyperfOpenTelemetry\Tracing\Annotation\Traced;
 use App\Infrastructure\User\Persistence\Model\User as EloquentUser;
 
 class UserEloquentRepository implements UserRepository

@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Infrastructure\Observability\Logging\OtelLogHandler;
-use App\Infrastructure\Observability\Logging\OtelTraceContextProcessor;
+use Cascata\HyperfOpenTelemetry\Logging\OtelLogHandler;
+use Cascata\HyperfOpenTelemetry\Logging\OtelTraceContextProcessor;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
