@@ -42,10 +42,6 @@ RUN chown www-data:www-data $APP_DIR
 
 COPY --chown=www-data:www-data . .
 
-RUN rm -rf vendor \
- && composer install --no-interaction \
- && composer update --no-interaction \
-
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN rm -rf vendor \

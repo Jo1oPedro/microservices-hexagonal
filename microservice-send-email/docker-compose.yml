@@ -6,12 +6,17 @@ services:
       args:
         PHP_VERSION: '8.4-bookworm'
       target: "${BUILD_TARGET:-app}"
-    container_name: app
+    container_name: send-email
     restart: unless-stopped
     command: ["php", "send-email.php"]
     environment:
-      APP_NAME: send-email-worker
-      ZIPKIN_ENDPOINT_URL: http://jaeger:9411/api/v2/spans
+      OTEL_ENABLED: "true"
+      OTEL_SERVICE_NAME: "send-email-worker"
+      OTEL_SERVICE_NAMESPACE: "cascata"
+      OTEL_SERVICE_VERSION: "1.0.0"
+      OTEL_DEPLOYMENT_ENV: "dev"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4318"
+      OTEL_TRACES_SAMPLER_ARG: "1.0"
     volumes:
       - ./:/var/www/app
     networks:
